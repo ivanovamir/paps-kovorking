@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Свободные слоты для {{ building.address }}</h1>
+    <p>{{ building.description }}</p> <!-- Добавляем описание здания -->
+    {% for room in rooms %}
+        <ul>
+            <li>
+                <h2>Комната #{{ room.id }}</h2>
+                <div style="width: 200px; height: 200px; overflow: hidden;">
+                    <img src="{{ room.image.url }}" alt="Изображение комнаты #{{ room.id }}" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <p>{{ room.description }}</p>  <!-- Добавляем описание комнаты -->
+                <div>
+                    <a href="{% url 'room_slots' room.id %}" class="button-link">Свободные слоты</a>
+                </div>
+            </li>
+        </ul>
+    {% endfor %}
+{% endblock %}

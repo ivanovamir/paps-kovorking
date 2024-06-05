@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form method="POST" novalidate>
+    {% csrf_token %}
+    <h2>Регистрация</h2>
+    <div>
+        {{ form.username.label_tag }}
+        {{ form.username }}
+    </div>
+    <div>
+        {{ form.password1.label_tag }}
+        {{ form.password1 }}
+        {% if form.password1.errors %}
+            <p class="error">{{ form.password1.errors }}</p>
+        {% endif %}
+    </div>
+    <div>
+        {{ form.password2.label_tag }}
+        {{ form.password2 }}
+        {% if form.password2.errors %}
+            <p class="error">{{ form.password2.errors }}</p>
+        {% endif %}
+    </div>
+    <input type="submit" value="Зарегистрироваться" class="button-link" />
+</form>
+{% endblock %}

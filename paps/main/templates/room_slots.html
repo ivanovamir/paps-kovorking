@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Свободные слоты для Комнаты #{{ room.id }} в {{ room.building.address }}</h1>
+    {% if error_message %}
+        <p style="color: red;">{{ error_message }}</p>
+    {% endif %}
+    {% if user.is_authenticated %}
+        <form method="post" action="{% url 'book_slot' %}">
+            {% csrf_token %}
+            <select name="time_slot">
+                {% for slot in slots %}
+                    <option value="{{ slot.id }}">
+                        {{ slot.start_time }} - {{ slot.end_time }}
+                    </option>
+                {% endfor %}
+            </select>
+            <input type="submit" value="Забронировать место" class="button-link" />
+        </form>
+    {% else %}
+        <p>Чтобы забронировать место, пожалуйста, <a href="{% url 'auth_login' %}">войдите в систему</a>.</p>
+    {% endif %}
+{% endblock %}

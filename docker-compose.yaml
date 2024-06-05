@@ -1,0 +1,26 @@
+version: "3.9"
+name: paps
+
+services:
+  postgres:
+    container_name: paps-postgres
+    image: postgres:15
+    volumes:
+      - postgresql_data:/var/lib/postgresql/data
+    restart: always
+    environment:
+      - PGDEBUG=true
+      - POSTGRES_USER=amir
+      - POSTGRES_DB=paps
+      - PGSSLMODE=disable
+      - POSTGRES_PASSWORD=qwerty
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - 5433:5432
+
+volumes:
+  postgresql_data:

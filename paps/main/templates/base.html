@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking System</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <style>
+        /* static/css/styles.css */
+        .button-link {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px 0;
+            color: white;
+            background-color: #007BFF;
+            text-decoration: none;
+            border-radius: 8px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+        .button-link:hover {
+            background-color: #0056b3;
+        }
+        /* Стилизация полей ввода */
+        input[type="text"],
+        input[type="password"] {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        /* Добавьте стили для кнопки */
+        .register-button {
+            background-color: green;
+            color: white;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .register-button:hover {
+            background-color: darkgreen;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .brand {
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+        }
+        .brand img {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            margin-left: 10px;
+        }
+        .contact {
+            font-size: 18px;
+            text-align: right;
+        }
+        nav {
+            display: flex;
+            justify-content: center;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 5px;
+            background-color: #666;
+        }
+        nav a:hover {
+            background-color: #444;
+        }
+        main {
+            padding: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        img {
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="brand">
+            <h1>Доступный коворкинг</h1>
+            {% load static %}
+<!--            <img src="{% static 'images/logo.png' %}" alt="Company Logo">-->
+        </div>
+        <div class="contact">
+            <p>Тел: +7 (987)-904-09-11  |  +7 (927)-579-21-12</p>
+        </div>
+        <nav>
+            {% if user.is_authenticated %}
+                <a href="{% url 'buildings_list' %}">Забронировать место</a>
+                <a href="{% url 'auth_logout' %}">Выйти</a>
+            {% else %}
+                {% if not request.path == '/login/' and not request.path == '/register/' %}
+                    <a href="{% url 'auth_login' %}">Войти</a>
+                    <a href="{% url 'register' %}">Регистрация</a>
+                {% endif %}
+            {% endif %}
+        </nav>
+    </header>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+</body>
+</html>
