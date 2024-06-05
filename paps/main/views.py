@@ -8,6 +8,10 @@ from django.shortcuts import redirect
 from .forms import CustomUserCreationForm, CustomUserLoginForm
 
 
+def home(request):
+    return render(request, 'index.html')
+
+
 def buildings_list(request):
     buildings = Building.objects.all()
     return render(request, 'buildings_list.html', {'buildings': buildings})
