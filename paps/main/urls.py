@@ -12,6 +12,9 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('logout/', views.auth_logout, name='auth_logout'),
     path('login/', views.auth_login, name='auth_login'),
+    path('profile/', views.profile, name='profile'),
+    path('payment/', views.payment, name='payment'),
+    path('cancel_booking/<int:booking_id>/', views.cancel_booking, name='cancel_booking'),
 ]
 
 if settings.DEBUG:

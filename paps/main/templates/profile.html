@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>История бронирований</h1>
+    {% for booking in bookings %}
+        <div class="booking-card">
+            <p><strong>Здание:</strong> {{ booking.building.address }}</p>
+            <p><strong>Комната:</strong> {{ booking.time_slot.room.id }}</p>
+            <p><strong>Временной слот:</strong> {{ booking.time_slot.start_time }} - {{ booking.time_slot.end_time }}</p>
+            <form method="post" action="{% url 'cancel_booking' booking.id %}">
+                {% csrf_token %}
+                <input type="submit" value="Отменить бронирование" class="button-link" />
+            </form>
+        </div>
+    {% empty %}
+        <p>У вас нет активных бронирований.</p>
+    {% endfor %}
+{% endblock %}

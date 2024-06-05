@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Оплата</h1>
+    {% if error_message %}
+        <p style="color: red;">{{ error_message }}</p>
+    {% endif %}
+    <form method="post" action="{% url 'payment' %}">
+        {% csrf_token %}
+        <input type="hidden" name="slot_id" value="{{ slot_id }}">
+        <div>
+            <label for="card_number">Номер карты:</label>
+            <input type="text" id="card_number" name="card_number" required>
+        </div>
+        <div>
+            <label for="card_expiry_date">Дата истечения срока действия:</label>
+            <input type="text" id="card_expiry_date" name="card_expiry_date" required>
+        </div>
+        <div>
+            <label for="card_cvv">CVV:</label>
+            <input type="text" id="card_cvv" name="card_cvv" required>
+        </div>
+        <div>
+            <label for="card_holder">ФИО держателя карты:</label>
+            <input type="text" id="card_holder" name="card_holder" required>
+        </div>
+        <input type="submit" value="Оплатить" class="button-link">
+    </form>
+{% endblock %}

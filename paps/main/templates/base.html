@@ -137,6 +137,7 @@
     <nav>
         {% if user.is_authenticated %}
             <a href="{% url 'home' %}">Главная</a>
+            <a href="{% url 'profile' %}">Личный кабинет</a>
             <a href="{% url 'buildings_list' %}">Забронировать место</a>
             <a href="{% url 'auth_logout' %}">Выйти</a>
         {% else %}

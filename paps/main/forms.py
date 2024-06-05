@@ -32,9 +32,10 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username', 'password1')
+        fields = ('username', 'password1', 'password2')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].label = _("Логин")
         self.fields['password1'].label = _("Пароль")
+        self.fields['password2'].label = _("Повторный пароль")

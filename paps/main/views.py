@@ -45,14 +45,7 @@ def book_slot(request):
             })
 
         if slot.current_bookings < slot.max_bookings:
-            RoomUser.objects.create(
-                user=request.user,
-                building=slot.room.building,
-                time_slot=slot
-            )
-            slot.current_bookings = F('current_bookings') + 1
-            slot.save()
-            return redirect('buildings_list')
+            return render(request, 'payment.html', {'slot_id': slot.id})
         return render(request, 'room_slots.html', {
             'room': slot.room,
             'slots': TimeSlot.objects.filter(room=slot.room, current_bookings__lt=F('max_bookings')),
@@ -98,3 +91,47 @@ def auth_login(request):
 def auth_logout(request):
     logout(request)
     return redirect('/')  # После выхода из системы перенаправляем пользователя на страницу входа
+
+
+@login_required
+def profile(request):
+    bookings = RoomUser.objects.filter(user=request.user)
+    return render(request, 'profile.html', {'bookings': bookings})
+
+
+@login_required
+def cancel_booking(request, booking_id):
+    booking = get_object_or_404(RoomUser, id=booking_id, user=request.user)
+    slot = booking.time_slot
+    booking.delete()
+    slot.current_bookings = F('current_bookings') - 1
+    slot.save()
+    return redirect('profile')
+
+
+@login_required
+def payment(request):
+    if request.method == 'POST':
+        card_number = request.POST.get('card_number')
+        card_expiry_date = request.POST.get('card_expiry_date')
+        card_cvv = request.POST.get('card_cvv')
+        card_holder = request.POST.get('card_holder')
+        slot_id = request.POST.get('slot_id')
+
+        if card_number and card_expiry_date and card_cvv and card_holder:
+            slot = get_object_or_404(TimeSlot, id=slot_id)
+            RoomUser.objects.create(
+                user=request.user,
+                building=slot.room.building,
+                time_slot=slot
+            )
+            slot.current_bookings = F('current_bookings') + 1
+            slot.save()
+            return redirect('/')
+        else:
+            return render(request, 'payment.html', {
+                'error_message': "Оплата не прошла. Пожалуйста, заполните все поля.",
+                'slot_id': slot_id
+            })
+    else:
+        return HttpResponseBadRequest("Невозможно провести оплату.")
